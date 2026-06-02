@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ModelLayer.DTO.User
 {
-    public  class RegisterUserRequest
+    public  class RegisterUserRequest // incoming layer 
     {
 
         [Required]

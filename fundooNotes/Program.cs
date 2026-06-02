@@ -1,6 +1,9 @@
 
 using DataBaseLayer.Context;
+using DataBaseLayer.Interface;
+using DataBaseLayer.Repository;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace fundooNotes
 {
@@ -19,6 +22,8 @@ namespace fundooNotes
 
             builder.Services.AddDbContext<UserDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("FundooNotesDB")));
+
+            builder.Services.AddScoped<IUserDAL,UserDAL>();
 
             var app = builder.Build();
 
