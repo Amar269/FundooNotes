@@ -1,8 +1,11 @@
 
+using BusinessLogicLayer.Interface;
+using BusinessLogicLayer.Service;
 using DataBaseLayer.Context;
 using DataBaseLayer.Interface;
 using DataBaseLayer.Repository;
 using Microsoft.EntityFrameworkCore;
+
 
 
 namespace fundooNotes
@@ -24,6 +27,8 @@ namespace fundooNotes
                 options.UseSqlServer(builder.Configuration.GetConnectionString("FundooNotesDB")));
 
             builder.Services.AddScoped<IUserDAL,UserDAL>();
+
+            builder.Services.AddScoped<IUserBLL, UserBLL>();
 
             var app = builder.Build();
 
