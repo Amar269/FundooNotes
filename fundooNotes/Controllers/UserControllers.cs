@@ -18,9 +18,9 @@ namespace fundooNotes.Controllers
         }
 
         [HttpPost]
-        public UserResponse RegsiterUser(RegisterUserRequest userRequest)
+        public async Task<UserResponse> RegsiterUser(RegisterUserRequest userRequest)
         {
-            return _userBLL.RegisterUser(userRequest);
+            return   await  _userBLL.RegisterUser(userRequest);
         }
         
 

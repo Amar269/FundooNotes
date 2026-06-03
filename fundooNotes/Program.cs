@@ -30,6 +30,8 @@ namespace fundooNotes
 
             builder.Services.AddScoped<IUserBLL, UserBLL>();
 
+            builder.Services.AddScoped<IEmailService, EmailService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

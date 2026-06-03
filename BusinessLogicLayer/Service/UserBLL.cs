@@ -14,14 +14,19 @@ namespace BusinessLogicLayer.Service
     public class UserBLL : IUserBLL
     {
         private readonly IUserDAL _UserDAl;
+        private readonly IEmailService _emailService;
 
-        public UserBLL(IUserDAL userDAl)
+        public UserBLL(
+               IUserDAL userDAl,
+               IEmailService emailService)
         {
             _UserDAl = userDAl;
+            _emailService = emailService;
         }
 
-       public UserResponse RegisterUser(RegisterUserRequest userRequest)
-       {
+
+        public async Task<UserResponse> RegisterUser(RegisterUserRequest userRequest)
+        {
             User user = new User()
             {
                 FirstName = userRequest.FirstName,
@@ -32,6 +37,10 @@ namespace BusinessLogicLayer.Service
                 ChangedAt = DateTime.UtcNow
             };
             user = _UserDAl.RegisterUser(user);
+            await _emailService.SendEmail(
+            user.Email,
+            "Welcome To Fundoo Notes",
+            $"<h2>Welcome {user.FirstName}</h2><p>Your account has been created successfully.</p>");
 
             UserResponse userResponse = new UserResponse()
             {
@@ -43,7 +52,12 @@ namespace BusinessLogicLayer.Service
             return userResponse;
 
 
+
+
         }
+
+
+       
 
     }
 }
