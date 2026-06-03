@@ -1,5 +1,4 @@
-﻿using ModelLayer.DTO.User;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace BusinessLogicLayer.Interface
 {
-    public interface IUserBLL
+    public interface IEmailService
     {
-        Task<UserResponse> RegisterUser(RegisterUserRequest userRequest);
-
+        Task SendEmail(
+            string toEmail,
+            string subject,
+            string body);
     }
 }
