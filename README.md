@@ -286,5 +286,3 @@ FundooNotes
 
 Cloud Researcher & .NET Trainee ☁️💻
 
-```
-```
