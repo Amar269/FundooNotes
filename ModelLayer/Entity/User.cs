@@ -39,5 +39,9 @@ namespace ModelLayer.Entity
 
 
         public DateTime ChangedAt { get; set; } = DateTime.UtcNow;
+
+
+        // It is a navigation property used to establish a one-to-many relationship
+        public ICollection<Notes>Notes { get; set; } 
     }
 }
