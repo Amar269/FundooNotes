@@ -11,5 +11,9 @@ namespace BusinessLogicLayer.Interface
     {
         Task<UserResponse> RegisterUser(RegisterUserRequest userRequest);
 
+        Task<bool> LoginUser(LoginRequest loginRequest);
+
+
+
     }
 }

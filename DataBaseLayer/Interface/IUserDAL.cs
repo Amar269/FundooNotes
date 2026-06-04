@@ -10,5 +10,10 @@ namespace DataBaseLayer.Interface
     public interface IUserDAL
     {
         User RegisterUser(User user);
+
+        User LoginUser(string Email);
+
+
+
     }
 }

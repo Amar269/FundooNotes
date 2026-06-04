@@ -27,6 +27,16 @@ namespace DataBaseLayer.Repository
 
        }
 
+     public User LoginUser(string Email)
+        {
+            return _dbcontext.Users
+                     .FirstOrDefault(x => x.Email == Email);
+
+        }
+       
+
+
+
 
 
 
