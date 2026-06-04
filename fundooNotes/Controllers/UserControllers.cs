@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using ModelLayer.DTO.User;
+using Microsoft.AspNetCore.Authorization;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace fundooNotes.Controllers
@@ -25,13 +26,20 @@ namespace fundooNotes.Controllers
 
         [HttpPost("Login")]
 
-        public async Task<bool> LoginUser(LoginRequest loginRequest)
+        public async Task<string> LoginUser(LoginRequest loginRequest)
         {
             return await _userBLL.LoginUser(loginRequest);
 
         }
 
-        
+        [Authorize]
+        [HttpGet("Test")]
+        public IActionResult Test()
+        {
+            return Ok("JWT Authentication Working Successfully");
+        }
+
+
 
     }
 }
