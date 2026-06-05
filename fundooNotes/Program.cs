@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-
+using Microsoft.OpenApi.Models;
 namespace fundooNotes
 {
     public class Program
@@ -40,7 +40,38 @@ namespace fundooNotes
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            //builder.Services.AddSwaggerGen(); ----------------- orginal code -------- updated down below to add JWT Authentication in Swagger UI
+
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.AddSecurityDefinition("Bearer",
+                    new OpenApiSecurityScheme
+                    {
+                        Name = "Authorization",
+                        Type = SecuritySchemeType.Http,
+                        Scheme = "bearer",
+                        BearerFormat = "JWT",
+                        In = ParameterLocation.Header,
+                        Description = "Enter JWT Token"
+                    });
+
+                options.AddSecurityRequirement(
+                    new OpenApiSecurityRequirement
+                    {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                Array.Empty<string>()
+            }
+                    });
+            });
+
 
             builder.Services.AddDbContext<UserDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("FundooNotesDB")));
@@ -50,6 +81,11 @@ namespace fundooNotes
             builder.Services.AddScoped<IUserBLL, UserBLL>();
 
             builder.Services.AddScoped<IEmailService, EmailService>();
+
+            builder.Services.AddScoped<INoteDAL, NoteDAL>();
+
+            builder.Services.AddScoped<INoteBLL, NoteBLL>();
+
 
             var app = builder.Build();
 
