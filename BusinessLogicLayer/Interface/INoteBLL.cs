@@ -16,6 +16,7 @@ namespace BusinessLogicLayer.Interface
 
         Notes GetNoteById(int noteId);
 
+        NoteResponse UpdateNote(UpdateNoteRequest updateNoteRequest , int noteId);
 
 
 

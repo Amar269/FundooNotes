@@ -88,5 +88,10 @@ namespace DataBaseLayer.Repository
             return _dbContext.Notes.FirstOrDefault(n => n.NotesId == noteId);
 
         }
+
+        public void SaveChanges()
+        {
+            _dbContext.SaveChanges();
+        }
     }
 }

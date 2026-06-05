@@ -56,5 +56,23 @@ namespace fundooNotes.Controllers
             }
         }
 
+        [HttpPut("Update/{noteId}")]
+
+        public IActionResult UpdateNote(int noteId, UpdateNoteRequest updateNoteRequest)
+        {
+            try
+            {
+                var result = _noteBLL.UpdateNote(updateNoteRequest, noteId);
+                {
+                    return Ok(result);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("ex.Message");
+            }
+        }
+
     }
 }

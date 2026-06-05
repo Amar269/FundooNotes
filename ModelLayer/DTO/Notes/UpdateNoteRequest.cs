@@ -18,6 +18,10 @@ namespace ModelLayer.DTO.Notes
 
         public string Image { get; set; }
 
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+
+
 
     }
 }

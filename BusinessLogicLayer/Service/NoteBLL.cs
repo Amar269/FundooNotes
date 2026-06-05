@@ -53,5 +53,44 @@ namespace BusinessLogicLayer.Service
 
             return note;
         }
+
+        public NoteResponse UpdateNote(UpdateNoteRequest updateNoteRequest, int noteId)
+        {
+            if(noteId <= 0) 
+            {
+                throw new Exception("Invalid Note Id");
+            }
+
+            Notes note = _noteDAL.GetNoteById(noteId);
+            if(note == null)
+            {
+                throw new Exception("Note not found");
+            }
+            note.Title= updateNoteRequest.Title;
+            note.Description = updateNoteRequest.Description;
+            note.Reminder = updateNoteRequest.Reminder;
+            note.Colour = updateNoteRequest.Colour;
+            note.Image = updateNoteRequest.Image;
+            note.UpdatedAt = updateNoteRequest.UpdatedAt;
+
+            _noteDAL.SaveChanges();
+
+            return new NoteResponse
+            {
+                NotesId = note.NotesId,
+                Title = note.Title,
+                Description = note.Description,
+                Reminder = note.Reminder,
+                Colour = note.Colour,
+                Image = note.Image,
+                IsArchive = note.IsArchive,
+                IsPin = note.IsPin,
+                IsTrash = note.IsTrash,
+                CreatedAt = note.CreatedAt,
+                UpdatedAt = note.UpdatedAt,
+                UserId = note.UserId
+            };
+            
+        }
     }
 }
