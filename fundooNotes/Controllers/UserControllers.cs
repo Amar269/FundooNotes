@@ -26,10 +26,9 @@ namespace fundooNotes.Controllers
 
         [HttpPost("Login")]
 
-        public async Task<string> LoginUser(LoginRequest loginRequest)
+        public async Task<TokenResponse> LoginUser(LoginRequest loginRequest)
         {
             return await _userBLL.LoginUser(loginRequest);
-
         }
 
         [Authorize]

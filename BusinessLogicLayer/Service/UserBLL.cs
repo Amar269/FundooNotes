@@ -136,57 +136,61 @@ namespace BusinessLogicLayer.Service
 
 
          }
-        public async Task<string> LoginUser(LoginRequest loginRequest)
+
+        public async Task<TokenResponse> LoginUser(LoginRequest loginRequest)
         {
             User user = _UserDAl.LoginUser(loginRequest.Email);
 
-            if(user == null)
+            if (user == null)
             {
-                return "Invalid Credentials";
+                return new TokenResponse
+                {
+                    Token = "",
+                    Message = "Invalid Credentials"
+                };
+
             }
-            bool result = BCrypt.Net.BCrypt.Verify(
-
-                loginRequest.Password,
-                user.Password);
-
+            bool result = BCrypt.Net.BCrypt.Verify(loginRequest.Password, user.Password);
             if (!result)
             {
-                return "Invalid Credentials";
+                return new TokenResponse
+                {
+                    Token = "",
+                    Message = "Invalid Credentials"
+                };
             }
 
             var claims = new[]
-           {
-              new Claim(ClaimTypes.Name, user.FirstName),
-              new Claim(ClaimTypes.Email, user.Email),
-              new Claim("UserId", user.UserId.ToString())
-                                               
-            };
+            {
+        new Claim(ClaimTypes.Name, user.FirstName),
+        new Claim(ClaimTypes.Email, user.Email),
+        new Claim("UserId", user.UserId.ToString())
+    };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
 
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
+            var credentials = new SigningCredentials(
+                key,
+                SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                      issuer: _configuration["Jwt:Issuer"],
-                      audience: _configuration["Jwt:Audience"],
-                      claims: claims,
-                      expires: DateTime.Now.AddMinutes(
-                      Convert.ToDouble(_configuration["Jwt:DurationInMinutes"])),
-                      signingCredentials: credentials
-             );
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(
+                    Convert.ToDouble(_configuration["Jwt:DurationInMinutes"])),
+                signingCredentials: credentials);
 
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            return tokenHandler.WriteToken(token);
-
-           
-
-
+            return new TokenResponse
+            {
+                Token = tokenHandler.WriteToken(token),
+                Message = "Login Successful"
+            };
         }
-
-
-
 
     }
 }
+

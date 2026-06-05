@@ -56,5 +56,31 @@ namespace DataBaseLayer.Repository
 
 
         }
+
+       
+        public List<NoteResponse> GetAllNotes(int userId)
+        {
+            var notes = _dbContext.Notes
+               .Where(n => n.UserId == userId && !n.IsTrash)// only active notes are shown 
+               .Select(n => new NoteResponse
+               {
+                   NotesId = n.NotesId,
+                   Title = n.Title,
+                   Description = n.Description,
+                   Reminder = n.Reminder,
+                   Colour = n.Colour,
+                   Image = n.Image,
+                   IsArchive = n.IsArchive,
+                   IsPin = n.IsPin,
+                   IsTrash = n.IsTrash,
+                   CreatedAt = n.CreatedAt,
+                   UpdatedAt = n.UpdatedAt,
+                   UserId = n.UserId
+
+               }).ToList();
+
+            return notes;
+
+        }
     }
 }

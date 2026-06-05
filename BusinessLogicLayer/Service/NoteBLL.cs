@@ -20,6 +20,7 @@ namespace BusinessLogicLayer.Service
 
         public NoteResponse CreateNote(CreateNoteRequest createNoteRequest, int userId)
         {
+
             if (string.IsNullOrEmpty(createNoteRequest.Title))
             {
                 throw new Exception("Title Required");
@@ -27,6 +28,12 @@ namespace BusinessLogicLayer.Service
 
             return _noteDAL.CreateNote(createNoteRequest, userId);
 
+        }
+
+
+        public List<NoteResponse> GetAllNotes(int userId)
+        {
+            return _noteDAL.GetAllNotes(userId);
         }
     }
 }

@@ -31,5 +31,14 @@ namespace fundooNotes.Controllers
 
             return Ok(result);
         }
-    }
+
+        [Authorize]
+        [HttpGet("GetAll")]
+        public IActionResult GetAllNotes()
+        {
+            int userId = Convert.ToInt32(User.FindFirst("UserId")?.Value);
+            var result = _noteBLL.GetAllNotes(userId);
+            return Ok(result);
+        }
+}
 }

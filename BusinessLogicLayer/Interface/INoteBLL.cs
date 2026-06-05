@@ -11,5 +11,9 @@ namespace BusinessLogicLayer.Interface
     {
         NoteResponse CreateNote(CreateNoteRequest createNoteRequest, int userId);
 
+        List<NoteResponse>GetAllNotes(int userId);
+
+
+
     }
 }
