@@ -82,5 +82,11 @@ namespace DataBaseLayer.Repository
             return notes;
 
         }
+
+        public Notes GetNoteById(int noteId)
+        {
+            return _dbContext.Notes.FirstOrDefault(n => n.NotesId == noteId);
+
+        }
     }
 }

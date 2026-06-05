@@ -1,6 +1,7 @@
 ﻿using BusinessLogicLayer.Interface;
 using DataBaseLayer.Interface;
 using ModelLayer.DTO.Notes;
+using ModelLayer.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,23 @@ namespace BusinessLogicLayer.Service
         public List<NoteResponse> GetAllNotes(int userId)
         {
             return _noteDAL.GetAllNotes(userId);
+        }
+
+        public Notes GetNoteById(int noteId)
+        {
+            if (noteId <= 0)
+            {
+                throw new Exception("Invalid Note Id");
+            }
+
+            Notes note = _noteDAL.GetNoteById(noteId);
+
+            if (note == null)
+            {
+                throw new Exception("Note Not Found");
+            }
+
+            return note;
         }
     }
 }

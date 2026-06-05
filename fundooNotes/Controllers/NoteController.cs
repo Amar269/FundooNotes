@@ -40,5 +40,21 @@ namespace fundooNotes.Controllers
             var result = _noteBLL.GetAllNotes(userId);
             return Ok(result);
         }
-}
+
+        [HttpGet("GetID/{noteId}")]
+        public IActionResult GetNoteById(int noteId)
+        {
+            try
+            {
+                var result = _noteBLL.GetNoteById(noteId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
+        }
+
+    }
 }
