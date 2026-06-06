@@ -26,6 +26,13 @@ namespace BusinessLogicLayer.Interface
 
         bool UnArchiveNote(int noteId);
 
+        bool pinNote(int noteId);
+
+        bool UnpinNote(int noteId);
+
+
+
+
 
 
 

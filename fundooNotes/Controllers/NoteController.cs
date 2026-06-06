@@ -1,13 +1,16 @@
 ﻿using BusinessLogicLayer.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using ModelLayer.DTO.Notes;
 using System.Security.Claims;
 
 namespace fundooNotes.Controllers
 {
+   
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class NoteController : ControllerBase
     {
         private readonly INoteBLL _noteBLL;
@@ -129,6 +132,38 @@ namespace fundooNotes.Controllers
             try
             {
                 bool result = _noteBLL.UnArchiveNote(noteId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
+
+        }
+
+        [HttpPut("Pin/{noteId}")]
+        public IActionResult PinNote(int noteId)
+        {
+            try
+            {
+                bool result = _noteBLL.pinNote(noteId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
+
+        }
+
+        [HttpPut("UnPin/{noteId}")]
+        public IActionResult UnpinNote(int noteId)
+        {
+            try
+            {
+                bool result = _noteBLL.UnpinNote(noteId);
                 return Ok(result);
             }
             catch (Exception ex)

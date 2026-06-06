@@ -95,6 +95,27 @@ namespace BusinessLogicLayer.Service
 
         }
 
+        public bool pinNote(int noteId)
+        {
+            if(noteId <=0)
+            {
+                throw new Exception("Invalid NoteId");
+
+            }
+
+            Notes note = _noteDAL.GetNoteById(noteId);
+            if(note == null)
+            {
+                throw new Exception("Note not Found");
+            }
+            note.IsPin = true;
+            note.UpdatedAt= DateTime.Now;
+
+            _noteDAL.SaveChanges();
+             return true;
+
+        }
+
         public bool RestoreNote(int noteId)
         {
             if (noteId <= 0)
@@ -135,6 +156,26 @@ namespace BusinessLogicLayer.Service
             _noteDAL.SaveChanges();
             return true;
 
+        }
+
+        public bool UnpinNote(int noteId)
+        {
+            if (noteId <= 0)
+            {
+                throw new Exception("Invalid NoteId");
+
+            }
+
+            Notes note = _noteDAL.GetNoteById(noteId);
+            if (note == null)
+            {
+                throw new Exception("Note not Found");
+            }
+            note.IsPin = false;
+            note.UpdatedAt = DateTime.Now;
+
+            _noteDAL.SaveChanges();
+            return true;
         }
 
         public NoteResponse UpdateNote(UpdateNoteRequest updateNoteRequest, int noteId)
