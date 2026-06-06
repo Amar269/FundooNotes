@@ -22,6 +22,8 @@ namespace BusinessLogicLayer.Interface
 
         bool RestoreNote(int noteId);
 
+        bool ArchiveNote(int noteId);
+
 
 
 

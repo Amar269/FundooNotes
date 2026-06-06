@@ -106,7 +106,23 @@ namespace fundooNotes.Controllers
             }
 
         }
-        
+
+        [HttpPut("Archive/{noteId}")]
+        public IActionResult ArchiveNote(int noteId)
+        {
+            try
+            {
+                bool result = _noteBLL.ArchiveNote(noteId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
+
+        }
+
 
     }
 }

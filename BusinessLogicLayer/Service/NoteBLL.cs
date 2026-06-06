@@ -19,6 +19,27 @@ namespace BusinessLogicLayer.Service
             _noteDAL = noteDAL;
         }
 
+        public bool ArchiveNote(int noteId)
+        {
+            if (noteId <= 0)
+            {
+                throw new Exception("Invalid Note Id");
+            }
+            Notes note = _noteDAL.GetNoteById(noteId);
+            if (note == null)
+            {
+                throw new Exception("Note Not Found");
+            }
+
+            note.IsArchive = true;
+            note.UpdatedAt = DateTime.Now;
+
+            _noteDAL.SaveChanges();
+            return true;
+
+
+        }
+
         public NoteResponse CreateNote(CreateNoteRequest createNoteRequest, int userId)
         {
 
