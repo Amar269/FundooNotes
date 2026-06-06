@@ -16,6 +16,28 @@ namespace BusinessLogicLayer.Interface
 
         Notes GetNoteById(int noteId);
 
+        NoteResponse UpdateNote(UpdateNoteRequest updateNoteRequest , int noteId);
+
+        bool MoveToTrash(int noteId);
+
+        bool RestoreNote(int noteId);
+
+        bool ArchiveNote(int noteId);
+
+        bool UnArchiveNote(int noteId);
+
+        bool pinNote(int noteId);
+
+        bool UnpinNote(int noteId);
+
+        bool permanentDelete(int noteId);
+
+        bool ChangeColour(ChangeColourRequest changeColourRequest, int noteId);
+
+
+
+
+
 
 
 

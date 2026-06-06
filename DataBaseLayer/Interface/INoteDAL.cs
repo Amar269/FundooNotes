@@ -15,7 +15,13 @@ namespace DataBaseLayer.Interface
         List<NoteResponse>GetAllNotes(int userId);
 
          Notes GetNoteById(int noteId);
-        
+
+        void SaveChanges();
+
+        void DeleteNote(Notes note);
+
+
+
 
 
 

@@ -19,6 +19,50 @@ namespace BusinessLogicLayer.Service
             _noteDAL = noteDAL;
         }
 
+        public bool ArchiveNote(int noteId)
+        {
+            if (noteId <= 0)
+            {
+                throw new Exception("Invalid Note Id");
+            }
+            Notes note = _noteDAL.GetNoteById(noteId);
+            if (note == null)
+            {
+                throw new Exception("Note Not Found");
+            }
+
+            note.IsArchive = true;
+            note.UpdatedAt = DateTime.Now;
+
+            _noteDAL.SaveChanges();
+            return true;
+
+
+        }
+
+        public bool ChangeColour(ChangeColourRequest changeColourRequest, int noteId)
+        {
+            if(noteId <= 0)
+            {
+                throw new Exception("Invalid Note Id");
+            }
+
+            Notes note = _noteDAL.GetNoteById(noteId);
+
+            if(note == null)
+            {
+                throw new Exception("Note Not Found");
+            }
+
+            note.Colour = changeColourRequest.Colour;
+            note.UpdatedAt = DateTime.Now;
+
+            _noteDAL.SaveChanges();
+            return true;
+
+        }
+        
+
         public NoteResponse CreateNote(CreateNoteRequest createNoteRequest, int userId)
         {
 
@@ -52,6 +96,170 @@ namespace BusinessLogicLayer.Service
             }
 
             return note;
+        }
+
+        public bool MoveToTrash(int noteId)
+        {
+            if(noteId<= 0)
+            {
+                throw new Exception("Invalid Note Id");
+            }
+            Notes note = _noteDAL.GetNoteById(noteId);
+            if (note == null)
+            {
+                throw new Exception("Note Not Found");
+            }
+
+            note.IsTrash = true;
+            note.UpdatedAt = DateTime.Now;
+
+            _noteDAL.SaveChanges();
+            return true;
+
+        }
+
+        public bool permanentDelete(int noteId)
+        {
+            if (noteId <= 0)
+            {
+                throw new Exception("Invalid NoteId");
+
+            }
+
+            Notes note = _noteDAL.GetNoteById(noteId);
+            if (note == null)
+            {
+                throw new Exception("Note not Found");
+            }
+            note.IsPin = true;
+            note.UpdatedAt = DateTime.Now;
+
+            _noteDAL.DeleteNote(note);
+            _noteDAL.SaveChanges();
+            return true;
+
+        }
+
+        public bool pinNote(int noteId)
+        {
+            if(noteId <=0)
+            {
+                throw new Exception("Invalid NoteId");
+
+            }
+
+            Notes note = _noteDAL.GetNoteById(noteId);
+            if(note == null)
+            {
+                throw new Exception("Note not Found");
+            }
+            note.IsPin = true;
+            note.UpdatedAt= DateTime.Now;
+
+            _noteDAL.SaveChanges();
+             return true;
+
+        }
+
+        public bool RestoreNote(int noteId)
+        {
+            if (noteId <= 0)
+            {
+                throw new Exception("Invalid Note Id");
+            }
+            Notes note = _noteDAL.GetNoteById(noteId);
+            if (note == null)
+            {
+                throw new Exception("Note Not Found");
+            }
+
+            note.IsTrash = false;
+            note.UpdatedAt = DateTime.Now;
+
+            _noteDAL.SaveChanges();
+            return true;
+
+        }
+
+        public bool UnArchiveNote(int noteId)
+        {
+            if (noteId <= 0)
+            {
+                throw new Exception("Invalid Note Id");
+            }
+
+            Notes note = _noteDAL.GetNoteById(noteId);
+
+            if (note == null)
+            {
+                throw new Exception("Note Not Found");
+            }
+
+            note.IsArchive = false;
+            note.UpdatedAt = DateTime.Now;
+
+            _noteDAL.SaveChanges();
+            return true;
+
+        }
+
+        public bool UnpinNote(int noteId)
+        {
+            if (noteId <= 0)
+            {
+                throw new Exception("Invalid NoteId");
+
+            }
+
+            Notes note = _noteDAL.GetNoteById(noteId);
+            if (note == null)
+            {
+                throw new Exception("Note not Found");
+            }
+            note.IsPin = false;
+            note.UpdatedAt = DateTime.Now;
+
+            _noteDAL.SaveChanges();
+            return true;
+        }
+
+        public NoteResponse UpdateNote(UpdateNoteRequest updateNoteRequest, int noteId)
+        {
+            if(noteId <= 0) 
+            {
+                throw new Exception("Invalid Note Id");
+            }
+
+            Notes note = _noteDAL.GetNoteById(noteId);
+            if(note == null)
+            {
+                throw new Exception("Note not found");
+            }
+            note.Title= updateNoteRequest.Title;
+            note.Description = updateNoteRequest.Description;
+            note.Reminder = updateNoteRequest.Reminder;
+            note.Colour = updateNoteRequest.Colour;
+            note.Image = updateNoteRequest.Image;
+            note.UpdatedAt = updateNoteRequest.UpdatedAt;
+
+            _noteDAL.SaveChanges();
+
+            return new NoteResponse
+            {
+                NotesId = note.NotesId,
+                Title = note.Title,
+                Description = note.Description,
+                Reminder = note.Reminder,
+                Colour = note.Colour,
+                Image = note.Image,
+                IsArchive = note.IsArchive,
+                IsPin = note.IsPin,
+                IsTrash = note.IsTrash,
+                CreatedAt = note.CreatedAt,
+                UpdatedAt = note.UpdatedAt,
+                UserId = note.UserId
+            };
+            
         }
     }
 }
