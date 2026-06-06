@@ -36,11 +36,5 @@ namespace BusinessLogicLayer.Interface
 
 
 
-
-
-
-
-
-
     }
 }

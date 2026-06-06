@@ -10,7 +10,7 @@ namespace fundooNotes.Controllers
    
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class NoteController : ControllerBase
     {
         private readonly INoteBLL _noteBLL;
