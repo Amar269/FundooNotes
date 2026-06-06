@@ -86,6 +86,11 @@ namespace fundooNotes
 
             builder.Services.AddScoped<INoteBLL, NoteBLL>();
 
+            builder.Services.AddScoped<ILabelDAL, LabelDAL>();
+
+            builder.Services.AddScoped<ILabelBLL, LabelBLL>();
+
+
 
             var app = builder.Build();
 

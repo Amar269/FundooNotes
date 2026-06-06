@@ -42,6 +42,8 @@ namespace ModelLayer.Entity
 
 
         // It is a navigation property used to establish a one-to-many relationship
-        public ICollection<Notes>Notes { get; set; } 
+        public ICollection<Notes>Notes { get; set; }
+
+        
     }
 }
