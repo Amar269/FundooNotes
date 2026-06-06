@@ -123,6 +123,22 @@ namespace fundooNotes.Controllers
 
         }
 
+        [HttpPut("UnArchive/{noteId}")]
+        public IActionResult UnArchiveNote(int noteId)
+        {
+            try
+            {
+                bool result = _noteBLL.UnArchiveNote(noteId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
+
+        }
+
 
     }
 }
