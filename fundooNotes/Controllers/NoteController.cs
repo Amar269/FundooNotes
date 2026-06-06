@@ -91,6 +91,22 @@ namespace fundooNotes.Controllers
         }
 
 
+        [HttpPut("Restore/{noteId}")]
+        public IActionResult RestoreNote(int noteId)
+        {
+            try
+            {
+                bool result = _noteBLL.RestoreNote(noteId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
+
+        }
+        
 
     }
 }

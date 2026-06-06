@@ -20,6 +20,8 @@ namespace BusinessLogicLayer.Interface
 
         bool MoveToTrash(int noteId);
 
+        bool RestoreNote(int noteId);
+
 
 
 

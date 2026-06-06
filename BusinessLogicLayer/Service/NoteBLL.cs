@@ -74,6 +74,26 @@ namespace BusinessLogicLayer.Service
 
         }
 
+        public bool RestoreNote(int noteId)
+        {
+            if (noteId <= 0)
+            {
+                throw new Exception("Invalid Note Id");
+            }
+            Notes note = _noteDAL.GetNoteById(noteId);
+            if (note == null)
+            {
+                throw new Exception("Note Not Found");
+            }
+
+            note.IsTrash = false;
+            note.UpdatedAt = DateTime.Now;
+
+            _noteDAL.SaveChanges();
+            return true;
+
+        }
+
         public NoteResponse UpdateNote(UpdateNoteRequest updateNoteRequest, int noteId)
         {
             if(noteId <= 0) 
