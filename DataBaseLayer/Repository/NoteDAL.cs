@@ -85,7 +85,7 @@ namespace DataBaseLayer.Repository
 
         public Notes GetNoteById(int noteId)
         {
-            return _dbContext.Notes.FirstOrDefault(n => n.NotesId == noteId);
+            return _dbContext.Notes.FirstOrDefault(n => n.NotesId == noteId && !n.IsTrash);
 
         }
 

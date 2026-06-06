@@ -74,5 +74,23 @@ namespace fundooNotes.Controllers
             }
         }
 
+
+        [HttpDelete("Trash/{noteId}")]
+        public IActionResult MoveTrash(int noteId)
+        {
+            try
+            {
+                bool result = _noteBLL.MoveToTrash(noteId);
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
+        }
+
+
+
     }
 }

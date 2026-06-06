@@ -18,6 +18,8 @@ namespace BusinessLogicLayer.Interface
 
         NoteResponse UpdateNote(UpdateNoteRequest updateNoteRequest , int noteId);
 
+        bool MoveToTrash(int noteId);
+
 
 
 
