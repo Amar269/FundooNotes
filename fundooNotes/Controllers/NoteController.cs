@@ -191,5 +191,36 @@ namespace fundooNotes.Controllers
         }
 
 
+        [HttpPut("Colour/{noteId}")]
+        public IActionResult ChangeColour(int noteId, ChangeColourRequest changeColourRequest)
+        {
+            try
+            {
+                bool result = _noteBLL.ChangeColour(changeColourRequest, noteId);
+                return Ok(result);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
+        }
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

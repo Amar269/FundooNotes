@@ -40,6 +40,29 @@ namespace BusinessLogicLayer.Service
 
         }
 
+        public bool ChangeColour(ChangeColourRequest changeColourRequest, int noteId)
+        {
+            if(noteId <= 0)
+            {
+                throw new Exception("Invalid Note Id");
+            }
+
+            Notes note = _noteDAL.GetNoteById(noteId);
+
+            if(note == null)
+            {
+                throw new Exception("Note Not Found");
+            }
+
+            note.Colour = changeColourRequest.Colour;
+            note.UpdatedAt = DateTime.Now;
+
+            _noteDAL.SaveChanges();
+            return true;
+
+        }
+        
+
         public NoteResponse CreateNote(CreateNoteRequest createNoteRequest, int userId)
         {
 

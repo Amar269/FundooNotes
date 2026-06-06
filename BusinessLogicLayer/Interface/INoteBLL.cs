@@ -32,6 +32,9 @@ namespace BusinessLogicLayer.Interface
 
         bool permanentDelete(int noteId);
 
+        bool ChangeColour(ChangeColourRequest changeColourRequest, int noteId);
+
+
 
 
 
