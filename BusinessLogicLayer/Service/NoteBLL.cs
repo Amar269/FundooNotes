@@ -95,6 +95,28 @@ namespace BusinessLogicLayer.Service
 
         }
 
+        public bool permanentDelete(int noteId)
+        {
+            if (noteId <= 0)
+            {
+                throw new Exception("Invalid NoteId");
+
+            }
+
+            Notes note = _noteDAL.GetNoteById(noteId);
+            if (note == null)
+            {
+                throw new Exception("Note not Found");
+            }
+            note.IsPin = true;
+            note.UpdatedAt = DateTime.Now;
+
+            _noteDAL.DeleteNote(note);
+            _noteDAL.SaveChanges();
+            return true;
+
+        }
+
         public bool pinNote(int noteId)
         {
             if(noteId <=0)

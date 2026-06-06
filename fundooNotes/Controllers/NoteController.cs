@@ -10,7 +10,7 @@ namespace fundooNotes.Controllers
    
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class NoteController : ControllerBase
     {
         private readonly INoteBLL _noteBLL;
@@ -172,6 +172,22 @@ namespace fundooNotes.Controllers
 
             }
 
+        }
+
+
+        [HttpDelete("Delete/{noteId}")]
+        public IActionResult PermanentDelete(int noteId)
+        {
+            try
+            {
+                bool result = _noteBLL.permanentDelete(noteId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
         }
 
 

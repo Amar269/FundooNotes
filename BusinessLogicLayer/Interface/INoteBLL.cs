@@ -30,6 +30,8 @@ namespace BusinessLogicLayer.Interface
 
         bool UnpinNote(int noteId);
 
+        bool permanentDelete(int noteId);
+
 
 
 

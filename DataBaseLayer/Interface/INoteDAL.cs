@@ -18,6 +18,9 @@ namespace DataBaseLayer.Interface
 
         void SaveChanges();
 
+        void DeleteNote(Notes note);
+
+
 
 
 

@@ -57,7 +57,12 @@ namespace DataBaseLayer.Repository
 
         }
 
-       
+        public void DeleteNote(Notes note)
+        {
+            _dbContext.Notes.Remove(note);
+            
+        }
+
         public List<NoteResponse> GetAllNotes(int userId)
         {
             var notes = _dbContext.Notes
