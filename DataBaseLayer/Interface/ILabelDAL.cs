@@ -13,6 +13,8 @@ namespace DataBaseLayer.Interface
 
         bool UpdateLabel(int labelId, int userId, UpdateLabelRequest request);
 
+        bool DeleteLabel(int labelId, int userId);
+
 
 
 

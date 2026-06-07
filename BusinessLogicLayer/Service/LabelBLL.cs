@@ -30,6 +30,16 @@ namespace BusinessLogicLayer.Service
 
         }
 
+        public bool DeleteLabel(int labelId, int userId)
+        {
+            if (labelId <= 0)
+            {
+                throw new Exception("Invalid Label Id");
+            }
+
+            return _labelDAL.DeleteLabel(labelId, userId);
+        }
+
         public bool UpdateLabel(int labelId, int userId, UpdateLabelRequest request)
         {
             if (labelId <= 0)

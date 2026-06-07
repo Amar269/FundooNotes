@@ -41,5 +41,17 @@ namespace fundooNotes.Controllers
 
             return Ok(result);
         }
+
+
+        [Authorize]
+        [HttpDelete("Delete")]
+        public IActionResult DeleteLabel(int labelId)
+        {
+            int userId = Convert.ToInt32(User.FindFirst("UserId")?.Value);
+
+            var result = _labelBLL.DeleteLabel(labelId, userId);
+
+            return Ok(result);
+        }
     }
 }

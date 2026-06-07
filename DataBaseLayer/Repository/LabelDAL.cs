@@ -46,25 +46,56 @@ namespace DataBaseLayer.Repository
 
         }
 
-        public bool UpdateLabel(int labelId, int userId, UpdateLabelRequest request)
+        public bool DeleteLabel(int labelId, int userId)
         {
             var label = _dbcontext.Labels
-                          .FirstOrDefault(x =>
-                               x.LabelId == labelId &&
-                               x.UserId == userId);
+        .FirstOrDefault(x => x.LabelId == labelId &&
+                             x.UserId == userId);
 
             if (label == null)
             {
                 return false;
             }
 
-            label.LabelName = request.LabelName;
-            label.UpdatedAt = DateTime.Now;
+            var mappings = _dbcontext.NoteLabels
+                .Where(x => x.LabelId == labelId)
+                .ToList();
+
+            _dbcontext.NoteLabels.RemoveRange(mappings);
+
+            _dbcontext.Labels.Remove(label);
 
             _dbcontext.SaveChanges();
 
             return true;
         }
 
+        public bool UpdateLabel(int labelId, int userId, UpdateLabelRequest request)
+        {
+            var label = _dbcontext.Labels
+        .FirstOrDefault(x => x.LabelId == labelId &&
+                             x.UserId == userId);
+
+            if (label == null)
+            {
+                return false;
+            }
+
+            var mappings = _dbcontext.NoteLabels
+                .Where(x => x.LabelId == labelId)
+                .ToList();
+
+            _dbcontext.NoteLabels.RemoveRange(mappings);
+
+            _dbcontext.Labels.Remove(label);
+
+            _dbcontext.SaveChanges();
+
+            return true;
+
+        }
+
     }
 }
+
+
