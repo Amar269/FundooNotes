@@ -29,5 +29,21 @@ namespace BusinessLogicLayer.Service
             return _labelDAL.CreateLabel(userId, request);
 
         }
+
+        public bool UpdateLabel(int labelId, int userId, UpdateLabelRequest request)
+        {
+            if (labelId <= 0)
+            {
+                throw new Exception("Invalid Label Id");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.LabelName))
+            {
+                throw new Exception("Label Name Cannot Be Empty");
+            }
+
+            return _labelDAL.UpdateLabel(labelId, userId, request);
+
+        }
     }
 }

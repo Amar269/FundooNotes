@@ -45,5 +45,26 @@ namespace DataBaseLayer.Repository
              return true;
 
         }
+
+        public bool UpdateLabel(int labelId, int userId, UpdateLabelRequest request)
+        {
+            var label = _dbcontext.Labels
+                          .FirstOrDefault(x =>
+                               x.LabelId == labelId &&
+                               x.UserId == userId);
+
+            if (label == null)
+            {
+                return false;
+            }
+
+            label.LabelName = request.LabelName;
+            label.UpdatedAt = DateTime.Now;
+
+            _dbcontext.SaveChanges();
+
+            return true;
+        }
+
     }
 }

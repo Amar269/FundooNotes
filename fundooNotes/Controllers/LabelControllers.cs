@@ -32,6 +32,14 @@ namespace fundooNotes.Controllers
             return Ok(result);
         }
 
+        [HttpPut("Update")]
+        public IActionResult UpdateLabel(int labelId, UpdateLabelRequest request)
+        {
+            int userId = Convert.ToInt32(User.FindFirst("UserId")?.Value);
 
+            var result = _labelBLL.UpdateLabel(labelId, userId, request);
+
+            return Ok(result);
+        }
     }
 }

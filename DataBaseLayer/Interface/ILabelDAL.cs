@@ -11,6 +11,9 @@ namespace DataBaseLayer.Interface
     {
         bool CreateLabel(int userId, CreateLabelRequest request);
 
+        bool UpdateLabel(int labelId, int userId, UpdateLabelRequest request);
+
+
 
 
 

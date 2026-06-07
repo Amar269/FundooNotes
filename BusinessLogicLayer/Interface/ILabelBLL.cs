@@ -9,9 +9,10 @@ namespace BusinessLogicLayer.Interface
 {
     public  interface ILabelBLL 
     {
-        bool CreateLabel(int userId, CreateLabelRequest request); 
+        bool CreateLabel(int userId, CreateLabelRequest request);
 
-        
+        bool UpdateLabel(int labelId, int userId, UpdateLabelRequest request);
+
 
 
 
