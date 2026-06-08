@@ -53,5 +53,20 @@ namespace fundooNotes.Controllers
 
             return Ok(result);
         }
+
+
+        [HttpDelete("RemoveFromNote")]
+        public IActionResult RemoveLabelFromNote(int noteId, int labelId)
+        {
+            int userId = Convert.ToInt32(
+                User.FindFirst("UserId")?.Value);
+
+            var result = _labelBLL.RemoveLabelFromNote(
+                noteId,
+                labelId,
+                userId);
+
+            return Ok(result);
+        }
     }
 }

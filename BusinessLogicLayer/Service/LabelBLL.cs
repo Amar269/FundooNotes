@@ -40,6 +40,21 @@ namespace BusinessLogicLayer.Service
             return _labelDAL.DeleteLabel(labelId, userId);
         }
 
+        public bool RemoveLabelFromNote(int noteId, int labelId, int userId)
+        {
+            if (noteId <= 0)
+            {
+                throw new Exception("Invalid Note Id");
+            }
+
+            if (labelId <= 0)
+            {
+                throw new Exception("Invalid Label Id");
+            }
+
+            return _labelDAL.RemoveLabelFromNote(noteId, labelId, userId);
+        }
+
         public bool UpdateLabel(int labelId, int userId, UpdateLabelRequest request)
         {
             if (labelId <= 0)

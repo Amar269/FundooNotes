@@ -15,6 +15,8 @@ namespace BusinessLogicLayer.Interface
 
         bool DeleteLabel(int labelId, int userId);
 
+        bool RemoveLabelFromNote(int noteId, int labelId, int userId);
+
 
 
 

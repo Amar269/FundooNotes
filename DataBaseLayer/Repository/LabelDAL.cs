@@ -70,6 +70,25 @@ namespace DataBaseLayer.Repository
             return true;
         }
 
+        public bool RemoveLabelFromNote(int noteId, int labelId, int userId)
+        {
+            var mapping = _dbcontext.NoteLabels
+        .FirstOrDefault(x =>
+            x.NoteId == noteId &&
+            x.LabelId == labelId);
+
+            if (mapping == null)
+            {
+                return false;
+            }
+
+            _dbcontext.NoteLabels.Remove(mapping);
+
+            _dbcontext.SaveChanges();
+
+            return true;
+        }
+
         public bool UpdateLabel(int labelId, int userId, UpdateLabelRequest request)
         {
             var label = _dbcontext.Labels
