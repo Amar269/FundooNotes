@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
 namespace fundooNotes
 {
     public class Program
@@ -89,6 +90,24 @@ namespace fundooNotes
             builder.Services.AddScoped<ILabelDAL, LabelDAL>();
 
             builder.Services.AddScoped<ILabelBLL, LabelBLL>();
+
+            builder.Services.AddScoped<IRedisDAL, RedisDAL>();
+
+            builder.Services.AddScoped<IRedisBLL , RedisBLL>();
+
+            builder.Services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration =
+                    builder.Configuration["Redis:ConnectionString"];
+            });
+
+            builder.Services.AddSingleton<IConnectionMultiplexer>(
+                ConnectionMultiplexer.Connect(
+                    builder.Configuration["Redis:ConnectionString"])
+            );
+
+
+
 
 
 
