@@ -1,4 +1,5 @@
 ﻿using BCrypt.Net;
+using BusinessLogicLayer.Exceptions;
 using BusinessLogicLayer.Interface;
 using DataBaseLayer.Interface;
 using Microsoft.Extensions.Configuration;
@@ -143,21 +144,14 @@ namespace BusinessLogicLayer.Service
 
             if (user == null)
             {
-                return new TokenResponse
-                {
-                    Token = "",
-                    Message = "Invalid Credentials"
-                };
+                throw new ValidationException("Invalid Credentials");
 
             }
             bool result = BCrypt.Net.BCrypt.Verify(loginRequest.Password, user.Password);
             if (!result)
             {
-                return new TokenResponse
-                {
-                    Token = "",
-                    Message = "Invalid Credentials"
-                };
+                throw new ValidationException("Invalid Credentials");
+
             }
 
             var claims = new[]

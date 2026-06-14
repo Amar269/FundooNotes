@@ -47,33 +47,28 @@ namespace fundooNotes.Controllers
         [HttpGet("GetID/{noteId}")]
         public IActionResult GetNoteById(int noteId)
         {
-            try
-            {
-                var result = _noteBLL.GetNoteById(noteId);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
+            var result = _noteBLL.GetNoteById(noteId);
+             return Ok(result);
+            //try
+            //{
+            //    var result = _noteBLL.GetNoteById(noteId);
+            //    return Ok(result);
+            //}
+            //catch (Exception ex)
+            //{
+            //    return BadRequest(ex.Message);
 
-            }
+            //}
         }
 
         [HttpPut("Update/{noteId}")]
 
         public IActionResult UpdateNote(int noteId, UpdateNoteRequest updateNoteRequest)
         {
-            try
+            var result = _noteBLL.UpdateNote(updateNoteRequest, noteId);
             {
-                var result = _noteBLL.UpdateNote(updateNoteRequest, noteId);
-                {
-                    return Ok(result);
+                return Ok(result);
 
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("ex.Message");
             }
         }
 
@@ -81,96 +76,48 @@ namespace fundooNotes.Controllers
         [HttpDelete("Trash/{noteId}")]
         public IActionResult MoveTrash(int noteId)
         {
-            try
-            {
-                bool result = _noteBLL.MoveToTrash(noteId);
-                return Ok(result);
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-
-            }
+            bool result = _noteBLL.MoveToTrash(noteId);
+            return Ok(result);
         }
 
 
         [HttpPut("Restore/{noteId}")]
         public IActionResult RestoreNote(int noteId)
         {
-            try
-            {
-                bool result = _noteBLL.RestoreNote(noteId);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-
-            }
+            bool result = _noteBLL.RestoreNote(noteId);
+            return Ok(result);
 
         }
 
         [HttpPut("Archive/{noteId}")]
         public IActionResult ArchiveNote(int noteId)
         {
-            try
-            {
-                bool result = _noteBLL.ArchiveNote(noteId);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-
-            }
-
+            bool result = _noteBLL.ArchiveNote(noteId);
+            return Ok(result);
         }
 
         [HttpPut("UnArchive/{noteId}")]
         public IActionResult UnArchiveNote(int noteId)
         {
-            try
-            {
-                bool result = _noteBLL.UnArchiveNote(noteId);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-
-            }
+            bool result = _noteBLL.UnArchiveNote(noteId);
+            return Ok(result);
 
         }
 
         [HttpPut("Pin/{noteId}")]
         public IActionResult PinNote(int noteId)
         {
-            try
-            {
-                bool result = _noteBLL.pinNote(noteId);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-
-            }
+            bool result = _noteBLL.pinNote(noteId);
+            return Ok(result);
 
         }
 
         [HttpPut("UnPin/{noteId}")]
         public IActionResult UnpinNote(int noteId)
         {
-            try
-            {
-                bool result = _noteBLL.UnpinNote(noteId);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-
-            }
+            bool result = _noteBLL.UnpinNote(noteId);
+            return Ok(result);
+            
 
         }
 
@@ -178,33 +125,19 @@ namespace fundooNotes.Controllers
         [HttpDelete("Delete/{noteId}")]
         public IActionResult PermanentDelete(int noteId)
         {
-            try
-            {
                 bool result = _noteBLL.permanentDelete(noteId);
                 return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-
-            }
+           
+            
         }
 
 
         [HttpPut("Colour/{noteId}")]
         public IActionResult ChangeColour(int noteId, ChangeColourRequest changeColourRequest)
         {
-            try
-            {
+            
                 bool result = _noteBLL.ChangeColour(changeColourRequest, noteId);
                 return Ok(result);
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-
-            }
         }
         
 

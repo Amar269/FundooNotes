@@ -1,4 +1,5 @@
-﻿using BusinessLogicLayer.Interface;
+﻿using BusinessLogicLayer.Exceptions;
+using BusinessLogicLayer.Interface;
 using DataBaseLayer.Interface;
 using ModelLayer.DTO.Label;
 using System;
@@ -23,7 +24,8 @@ namespace BusinessLogicLayer.Service
         {
             if(string.IsNullOrWhiteSpace(request.LabelName))
             {
-                throw new Exception("Label name cannot be empty.");
+                throw new ValidationException("Label name cannot be empty.");
+                
             }
 
             return _labelDAL.CreateLabel(userId, request);
@@ -34,7 +36,7 @@ namespace BusinessLogicLayer.Service
         {
             if (labelId <= 0)
             {
-                throw new Exception("Invalid Label Id");
+                throw new ValidationException("Invalid Label Id");
             }
 
             return _labelDAL.DeleteLabel(labelId, userId);
@@ -44,12 +46,12 @@ namespace BusinessLogicLayer.Service
         {
             if (noteId <= 0)
             {
-                throw new Exception("Invalid Note Id");
+                throw new ValidationException("Invalid Note Id");
             }
 
             if (labelId <= 0)
             {
-                throw new Exception("Invalid Label Id");
+                throw new ValidationException("Invalid Label Id");
             }
 
             return _labelDAL.RemoveLabelFromNote(noteId, labelId, userId);
@@ -59,12 +61,12 @@ namespace BusinessLogicLayer.Service
         {
             if (labelId <= 0)
             {
-                throw new Exception("Invalid Label Id");
+                throw new ValidationException("Invalid Label Id");
             }
 
             if (string.IsNullOrWhiteSpace(request.LabelName))
             {
-                throw new Exception("Label Name Cannot Be Empty");
+                throw new ValidationException("Label Name Cannot Be Empty");
             }
 
             return _labelDAL.UpdateLabel(labelId, userId, request);

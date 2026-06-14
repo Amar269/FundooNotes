@@ -1,4 +1,5 @@
-﻿using BusinessLogicLayer.Interface;
+﻿using BusinessLogicLayer.Exceptions;
+using BusinessLogicLayer.Interface;
 using DataBaseLayer.Interface;
 using DataBaseLayer.Migrations;
 using ModelLayer.DTO.Notes;
@@ -28,12 +29,12 @@ namespace BusinessLogicLayer.Service
         {
             if (noteId <= 0)
             {
-                throw new Exception("Invalid Note Id");
+                throw new ValidationException("Invalid Note Id");
             }
             Notes note = _noteDAL.GetNoteById(noteId);
             if (note == null)
             {
-                throw new Exception("Note Not Found");
+                throw new NotFoundException("Note Not Found");
             }
 
             note.IsArchive = true;
@@ -45,19 +46,20 @@ namespace BusinessLogicLayer.Service
 
 
         }
+        
 
         public bool ChangeColour(ChangeColourRequest changeColourRequest, int noteId)
         {
             if(noteId <= 0)
             {
-                throw new Exception("Invalid Note Id");
+                throw new ValidationException("Invalid Note Id");
             }
 
             Notes note = _noteDAL.GetNoteById(noteId);
 
             if(note == null)
             {
-                throw new Exception("Note Not Found");
+                throw new NotFoundException("Note Not Found");
             }
 
             note.Colour = changeColourRequest.Colour;
@@ -75,7 +77,7 @@ namespace BusinessLogicLayer.Service
 
             if (string.IsNullOrEmpty(createNoteRequest.Title))
             {
-                throw new Exception("Title Required");
+                throw new ValidationException("Title Required");
             }
 
             var result =  _noteDAL.CreateNote(createNoteRequest, userId);
@@ -110,16 +112,17 @@ namespace BusinessLogicLayer.Service
 
         public Notes GetNoteById(int noteId)
         {
+            //throw new ValidationException("Testing Global Exception");
             if (noteId <= 0)
             {
-                throw new Exception("Invalid Note Id");
+                throw new ValidationException("Invalid Note Id");
             }
 
             Notes note = _noteDAL.GetNoteById(noteId);
 
             if (note == null)
             {
-                throw new Exception("Note Not Found");
+                throw new NotFoundException("Note Not Found");
             }
 
             return note;
@@ -129,12 +132,12 @@ namespace BusinessLogicLayer.Service
         {
             if(noteId<= 0)
             {
-                throw new Exception("Invalid Note Id");
+                throw new ValidationException("Invalid Note Id");
             }
             Notes note = _noteDAL.GetNoteById(noteId);
             if (note == null)
             {
-                throw new Exception("Note Not Found");
+                throw new NotFoundException("Note Not Found");
             }
 
             note.IsTrash = true;
@@ -150,14 +153,14 @@ namespace BusinessLogicLayer.Service
         {
             if (noteId <= 0)
             {
-                throw new Exception("Invalid NoteId");
+                throw new ValidationException("Invalid Note Id");
 
             }
 
             Notes note = _noteDAL.GetNoteById(noteId);
             if (note == null)
             {
-                throw new Exception("Note not Found");
+                throw new NotFoundException("Note Not Found");
             }
             note.IsPin = true;
             note.UpdatedAt = DateTime.Now;
@@ -173,14 +176,14 @@ namespace BusinessLogicLayer.Service
         {
             if(noteId <=0)
             {
-                throw new Exception("Invalid NoteId");
+                throw new ValidationException("Invalid Note Id");
 
             }
 
             Notes note = _noteDAL.GetNoteById(noteId);
             if(note == null)
             {
-                throw new Exception("Note not Found");
+                throw new NotFoundException("Note Not Found");
             }
             note.IsPin = true;
             note.UpdatedAt= DateTime.Now;
@@ -195,12 +198,12 @@ namespace BusinessLogicLayer.Service
         {
             if (noteId <= 0)
             {
-                throw new Exception("Invalid Note Id");
+                throw new ValidationException("Invalid Note Id");
             }
             Notes note = _noteDAL.GetNoteById(noteId);
             if (note == null)
             {
-                throw new Exception("Note Not Found");
+                throw new NotFoundException("Note Not Found");
             }
 
             note.IsTrash = false;
@@ -216,14 +219,14 @@ namespace BusinessLogicLayer.Service
         {
             if (noteId <= 0)
             {
-                throw new Exception("Invalid Note Id");
+                throw new ValidationException("Invalid Note Id");
             }
 
             Notes note = _noteDAL.GetNoteById(noteId);
 
             if (note == null)
             {
-                throw new Exception("Note Not Found");
+                throw new NotFoundException("Note Not Found");
             }
 
             note.IsArchive = false;
@@ -239,14 +242,14 @@ namespace BusinessLogicLayer.Service
         {
             if (noteId <= 0)
             {
-                throw new Exception("Invalid NoteId");
+                throw new ValidationException("Invalid Note Id");
 
             }
 
             Notes note = _noteDAL.GetNoteById(noteId);
             if (note == null)
             {
-                throw new Exception("Note not Found");
+                throw new NotFoundException("Note Not Found");
             }
             note.IsPin = false;
             note.UpdatedAt = DateTime.Now;
@@ -260,13 +263,13 @@ namespace BusinessLogicLayer.Service
         {
             if(noteId <= 0) 
             {
-                throw new Exception("Invalid Note Id");
+                throw new ValidationException("Invalid Note Id");
             }
 
             Notes note = _noteDAL.GetNoteById(noteId);
             if(note == null)
             {
-                throw new Exception("Note not found");
+                throw new NotFoundException("Note Not Found");
             }
             note.Title= updateNoteRequest.Title;
             note.Description = updateNoteRequest.Description;
