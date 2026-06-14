@@ -23,6 +23,8 @@ namespace DataBaseLayer.Context
 
         public DbSet<NoteLabel> NoteLabels { get; set; }
 
+        public DbSet<Collaborator> Collaborators { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -148,6 +150,24 @@ namespace DataBaseLayer.Context
                       .HasForeignKey(nl => nl.LabelId)
                       .OnDelete(DeleteBehavior.NoAction);
             });
+
+            modelBuilder.Entity<Collaborator>()
+                       .HasOne(c => c.OwnerUser)
+                       .WithMany()
+                       .HasForeignKey(c => c.OwnerUserId)
+                       .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Collaborator>()
+                .HasOne(c => c.CollaboratorUser)
+                .WithMany()
+                .HasForeignKey(c => c.CollaboratorUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Collaborator>()
+                .HasOne(c => c.Note)
+                .WithMany()
+                .HasForeignKey(c => c.NoteId)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
 

@@ -1,11 +1,13 @@
 ﻿using BusinessLogicLayer.Interface;
 using DataBaseLayer.Interface;
+using DataBaseLayer.Migrations;
 using ModelLayer.DTO.Notes;
 using ModelLayer.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace BusinessLogicLayer.Service
@@ -14,9 +16,12 @@ namespace BusinessLogicLayer.Service
     {
         private readonly INoteDAL _noteDAL;
 
-        public NoteBLL(INoteDAL noteDAL)
+        private readonly ICacheService _cacheService;
+
+        public NoteBLL(INoteDAL noteDAL , ICacheService cacheService)
         {
             _noteDAL = noteDAL;
+            _cacheService = cacheService;
         }
 
         public bool ArchiveNote(int noteId)
@@ -35,6 +40,7 @@ namespace BusinessLogicLayer.Service
             note.UpdatedAt = DateTime.Now;
 
             _noteDAL.SaveChanges();
+            _cacheService.RemoveCache($"Notes_{note.UserId}");
             return true;
 
 
@@ -58,6 +64,7 @@ namespace BusinessLogicLayer.Service
             note.UpdatedAt = DateTime.Now;
 
             _noteDAL.SaveChanges();
+            _cacheService.RemoveCache($"Notes_{note.UserId}");
             return true;
 
         }
@@ -71,14 +78,34 @@ namespace BusinessLogicLayer.Service
                 throw new Exception("Title Required");
             }
 
-            return _noteDAL.CreateNote(createNoteRequest, userId);
+            var result =  _noteDAL.CreateNote(createNoteRequest, userId);
+            _cacheService.RemoveCache($"Notes_{userId}");
+            return result;
 
         }
 
 
         public List<NoteResponse> GetAllNotes(int userId)
         {
-            return _noteDAL.GetAllNotes(userId);
+            string cacheKey = $"Notes_{userId}";
+
+            string cachedData = _cacheService.GetCache(cacheKey);
+
+            if (!string.IsNullOrEmpty(cachedData))
+            {
+                return JsonSerializer.Deserialize<List<NoteResponse>>(cachedData) ?? new List<NoteResponse>();
+            }
+
+            var notes = _noteDAL.GetAllNotes(userId);
+
+            string jsonData = JsonSerializer.Serialize(notes);
+
+            _cacheService.SetCache(cacheKey, jsonData, 30);
+
+            return notes;
+
+
+            //return _noteDAL.GetAllNotes(userId);
         }
 
         public Notes GetNoteById(int noteId)
@@ -114,6 +141,7 @@ namespace BusinessLogicLayer.Service
             note.UpdatedAt = DateTime.Now;
 
             _noteDAL.SaveChanges();
+            _cacheService.RemoveCache($"Notes_{note.UserId}");
             return true;
 
         }
@@ -136,6 +164,7 @@ namespace BusinessLogicLayer.Service
 
             _noteDAL.DeleteNote(note);
             _noteDAL.SaveChanges();
+            
             return true;
 
         }
@@ -157,7 +186,8 @@ namespace BusinessLogicLayer.Service
             note.UpdatedAt= DateTime.Now;
 
             _noteDAL.SaveChanges();
-             return true;
+            _cacheService.RemoveCache($"Notes_{note.UserId}");
+            return true;
 
         }
 
@@ -177,6 +207,7 @@ namespace BusinessLogicLayer.Service
             note.UpdatedAt = DateTime.Now;
 
             _noteDAL.SaveChanges();
+            _cacheService.RemoveCache($"Notes_{note.UserId}");
             return true;
 
         }
@@ -199,6 +230,7 @@ namespace BusinessLogicLayer.Service
             note.UpdatedAt = DateTime.Now;
 
             _noteDAL.SaveChanges();
+            _cacheService.RemoveCache($"Notes_{note.UserId}");
             return true;
 
         }
@@ -220,6 +252,7 @@ namespace BusinessLogicLayer.Service
             note.UpdatedAt = DateTime.Now;
 
             _noteDAL.SaveChanges();
+            _cacheService.RemoveCache($"Notes_{note.UserId}");
             return true;
         }
 
@@ -240,9 +273,12 @@ namespace BusinessLogicLayer.Service
             note.Reminder = updateNoteRequest.Reminder;
             note.Colour = updateNoteRequest.Colour;
             note.Image = updateNoteRequest.Image;
-            note.UpdatedAt = updateNoteRequest.UpdatedAt;
+            note.UpdatedAt = DateTime.Now;
+        
 
             _noteDAL.SaveChanges();
+            _cacheService.RemoveCache($"Notes_{note.UserId}");
+
 
             return new NoteResponse
             {
@@ -258,6 +294,7 @@ namespace BusinessLogicLayer.Service
                 CreatedAt = note.CreatedAt,
                 UpdatedAt = note.UpdatedAt,
                 UserId = note.UserId
+
             };
             
         }

@@ -23,10 +23,21 @@ namespace DataBaseLayer.Repository
            return  _databse.StringGet(key);
         }
 
-        public void SetData(string key, string value)
+        public long? GetTTL(string key)
         {
-            _databse.StringSet(key, value);
+            var ttl = _databse.KeyTimeToLive(key);
 
+            if (ttl == null)
+            {
+                return null;
+            }
+            return (long)ttl.Value.TotalSeconds;
+        }
+
+        public void SetData(string key, string value, int expiryMinutes)
+        {
+            _databse.StringSet(key,value, TimeSpan.FromMinutes(expiryMinutes));
         }
     }
+    
 }

@@ -8,7 +8,10 @@ namespace BusinessLogicLayer.Interface
 {
     public  interface IRedisBLL
     {
-        void SetData(string key, string value);
+        void SetData(string key, string value , int expiryMinutes);
         string GetData(string key);
+
+        long? GetTTL(string key);
+
     }
 }

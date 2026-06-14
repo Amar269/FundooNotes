@@ -20,9 +20,14 @@ namespace BusinessLogicLayer.Service
             return _redisDAL.GetData(key);
         }
 
-        public void SetData(string key, string value)
+        public long? GetTTL(string key)
         {
-            _redisDAL.SetData(key, value);
+            return _redisDAL.GetTTL(key);
+        }
+
+        public void SetData(string key, string value, int expiryMinutes)
+        {
+            _redisDAL.SetData(key, value, expiryMinutes);
         }
     }
 }

@@ -95,6 +95,12 @@ namespace fundooNotes
 
             builder.Services.AddScoped<IRedisBLL , RedisBLL>();
 
+            builder.Services.AddScoped<ICacheService, CacheService>();
+
+            builder.Services.AddScoped<ICollaboratorDAL, CollaboratorDAL>();
+
+            builder.Services.AddScoped<ICollaboratorBLL, CollaboratorBLL>();
+
             builder.Services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration =
