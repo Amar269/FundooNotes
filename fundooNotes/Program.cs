@@ -5,6 +5,7 @@ using DataBaseLayer.Context;
 using DataBaseLayer.Interface;
 using DataBaseLayer.Repository;
 using fundooNotes.ExceptionHandler;
+using fundooNotes.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -116,6 +117,9 @@ namespace fundooNotes
             builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
             builder.Services.AddProblemDetails();
 
+            builder.Services.AddScoped<IRabbitMQProducer, RabbitMQProducer>();
+
+            builder.Services.AddHostedService<RabbitMQConsumer>();
 
 
 

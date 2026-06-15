@@ -4,6 +4,7 @@ using BusinessLogicLayer.Interface;
 using DataBaseLayer.Interface;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using ModelLayer.DTO.RabbitMQ;
 using ModelLayer.DTO.User;
 using ModelLayer.Entity;
 using System;
@@ -21,16 +22,18 @@ namespace BusinessLogicLayer.Service
         private readonly IUserDAL _UserDAl;
         private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
-
+        private readonly IRabbitMQProducer _rabbitMQProducer;
         public UserBLL(
                IUserDAL userDAl,
                IEmailService emailService ,
-            IConfiguration configuration
+            IConfiguration configuration ,
+            IRabbitMQProducer rabbitMQProducer
          )
         {
             _UserDAl = userDAl;
             _emailService = emailService;
             _configuration = configuration;
+            _rabbitMQProducer = rabbitMQProducer;
         }
 
 
@@ -118,10 +121,18 @@ namespace BusinessLogicLayer.Service
     </div>
 
 </div>";
-            await _emailService.SendEmail(
-            user.Email,
-            "Welcome To Fundoo Notes",
-            body);
+            var emailMessage = new EmailMessageDTO
+            {
+                ToEmail = user.Email,
+                Subject = "Welcome To Fundoo Notes",
+                Body = body
+            };
+            await _rabbitMQProducer.PublishEmailMessage(emailMessage);
+
+            //await _emailService.SendEmail(
+            //user.Email,
+            //"Welcome To Fundoo Notes",
+            //body);
 
             UserResponse userResponse = new UserResponse()
             {
