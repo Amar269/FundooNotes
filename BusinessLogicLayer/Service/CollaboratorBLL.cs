@@ -36,5 +36,17 @@ namespace BusinessLogicLayer.Service
         {
             return _collaboratorDAL.RemoveCollaborator(collaboratorId);
         }
+
+        public CollaboratorResponse UpdatePermission(int collaboratorId, string permission)
+        {
+            permission = permission.ToUpper();
+
+            if (permission != "VIEW" && permission != "EDIT")
+            {
+                throw new Exception("Permission must be VIEW or EDIT");
+            }
+
+            return _collaboratorDAL.UpdatePermission(collaboratorId, permission);
+        }
     }
 }

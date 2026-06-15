@@ -1,6 +1,7 @@
 ﻿using BusinessLogicLayer.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ModelLayer.DTO.Collaborator;
 using System.Security.Claims;
 
 namespace fundooNotes.Controllers
@@ -72,6 +73,24 @@ namespace fundooNotes.Controllers
             });
         }
 
+
+
+        [HttpPut("{collaboratorId}/permission")]
+        public IActionResult UpdatePermission(
+        int collaboratorId,
+        [FromBody] UpdatePermissionRequest request)
+        {
+            var result = _collaboratorBLL.UpdatePermission(
+                collaboratorId,
+                request.Permission);
+
+            return Ok(new
+            {
+                success = true,
+                message = "Permission updated successfully",
+                data = result
+            });
+        }
 
 
 

@@ -82,5 +82,33 @@ namespace DataBaseLayer.Repository
 
             return true;
         }
+
+        public CollaboratorResponse UpdatePermission(int collaboratorId, string permission)
+        {
+            var collaborator = _dbContext.Collaborators
+        .FirstOrDefault(x => x.CollaboratorId == collaboratorId);
+
+            if (collaborator == null)
+            {
+                throw new Exception("Collaborator not found");
+            }
+
+            collaborator.Permission = permission;
+
+            _dbContext.SaveChanges();
+
+            return new CollaboratorResponse
+            {
+                CollaboratorId = collaborator.CollaboratorId,
+                OwnerUserId = collaborator.OwnerUserId,
+                CollaboratorUserId = collaborator.CollaboratorUserId,
+                NoteId = collaborator.NoteId,
+                Email = collaborator.Email,
+                Permission = collaborator.Permission
+            };
+
+
+
+        }
     }
 }

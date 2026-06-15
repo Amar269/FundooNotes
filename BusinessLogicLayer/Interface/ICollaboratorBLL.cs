@@ -15,5 +15,7 @@ namespace BusinessLogicLayer.Interface
 
         bool RemoveCollaborator(int collaboratorId);
 
+        CollaboratorResponse UpdatePermission(int collaboratorId, string permission);
+
     }
 }
