@@ -1,6 +1,7 @@
 ﻿using BCrypt.Net;
 using BusinessLogicLayer.Exceptions;
 using BusinessLogicLayer.Interface;
+using BusinessLogicLayer.Templates;
 using DataBaseLayer.Interface;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -167,10 +168,10 @@ namespace BusinessLogicLayer.Service
 
             var claims = new[]
             {
-        new Claim(ClaimTypes.Name, user.FirstName),
-        new Claim(ClaimTypes.Email, user.Email),
-        new Claim("UserId", user.UserId.ToString())
-    };
+              new Claim(ClaimTypes.Name, user.FirstName),
+              new Claim(ClaimTypes.Email, user.Email),
+              new Claim("UserId", user.UserId.ToString())
+            };
 
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -196,6 +197,80 @@ namespace BusinessLogicLayer.Service
             };
         }
 
+        public async Task<bool> ForgotPassword(string email)
+        {
+            bool result = _UserDAl.ForgotPassword(email);
+
+            if (!result)
+            {
+                throw new ValidationException("User not found");
+            }
+
+            string resetToken = GenerateResetToken(email);
+
+            //string resetToken = Guid.NewGuid().ToString();
+
+
+
+            string body =  ForgotPasswordTemplate.GetBody(resetToken);
+
+            var emailMessage = new EmailMessageDTO
+            {
+                ToEmail = email,
+                Subject = "Reset Password - Fundoo Notes",
+                Body = body
+            };
+
+            await _rabbitMQProducer.PublishEmailMessage(emailMessage);
+
+            return true;
+
+        }
+
+        public Task<bool> ResetPassword(string email, ResetPasswordRequest request)
+        {
+            if (request.NewPassword != request.ConfirmPassword)
+            {
+                throw new ValidationException(
+                    "Passwords do not match");
+            }
+
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+
+            bool result = _UserDAl.ResetPassword(email, hashedPassword);
+
+            if (!result)
+            {
+                throw new ValidationException("User not found");
+            }
+
+            return Task.FromResult(true);
+        }
+
+        private string GenerateResetToken(string email)
+        {
+            var claims = new[]
+          {
+            new Claim(ClaimTypes.Email, email)
+
+
+          };
+            var key = new SymmetricSecurityKey( Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+            issuer: _configuration["Jwt:Issuer"],
+            audience: _configuration["Jwt:Audience"],
+            claims: claims,
+            expires: DateTime.Now.AddMinutes(15),
+            signingCredentials: credentials);
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            return tokenHandler.WriteToken(token);
+
+        }
     }
 }
 

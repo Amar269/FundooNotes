@@ -13,6 +13,13 @@ namespace DataBaseLayer.Interface
 
         User LoginUser(string Email);
 
+        bool ForgotPassword(string email);
+
+        bool ResetPassword(string email, string newPassword);
+
+
+
+
 
 
 

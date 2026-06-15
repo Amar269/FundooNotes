@@ -13,6 +13,10 @@ namespace BusinessLogicLayer.Interface
 
         Task<TokenResponse> LoginUser(LoginRequest loginRequest);
 
+        Task <bool> ForgotPassword(string email);
+
+        Task <bool> ResetPassword(string email, ResetPasswordRequest request);
+
 
 
 
