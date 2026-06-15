@@ -41,6 +41,28 @@ namespace fundooNotes.Controllers
                     Message = ex.Message
                 });
             }
+
+
         }
+
+        [HttpGet("{noteId}/collaborators")]
+        public IActionResult GetCollaborators(int noteId)
+        {
+            var result = _collaboratorBLL.GetCollaborators(noteId);
+
+            return Ok(new
+            {
+                success = true,
+                data = result
+            });
+        }
+
+
+
+
+
+
+
+
     }
 }

@@ -21,5 +21,15 @@ namespace BusinessLogicLayer.Service
         {
             return _collaboratorDAL.AddCollaborator(ownerUserId, noteId, email);
         }
+
+        public List<GetCollaboratorResponse> GetCollaborators(int noteId)
+        {
+            if (noteId <= 0)
+            {
+                throw new Exception("Invalid Note Id");
+            }
+
+            return _collaboratorDAL.GetCollaborators(noteId);
+        }
     }
 }

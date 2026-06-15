@@ -52,5 +52,19 @@ namespace DataBaseLayer.Repository
                 Permission = collaborator.Permission
             };
         }
+
+        public List<GetCollaboratorResponse> GetCollaborators(int noteId)
+        {
+            return _dbContext.Collaborators
+        .Where(x => x.NoteId == noteId)
+        .Select(x => new GetCollaboratorResponse
+        {
+            CollaboratorId = x.CollaboratorId,
+            CollaboratorUserId = x.CollaboratorUserId,
+            Email = x.Email,
+            Permission = x.Permission
+        })
+        .ToList();
+        }
     }
 }

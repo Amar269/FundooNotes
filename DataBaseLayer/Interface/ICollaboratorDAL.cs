@@ -11,6 +11,8 @@ namespace DataBaseLayer.Interface
     {
         
             CollaboratorResponse AddCollaborator(int ownerUserId,int noteId,string email);
-       
+
+             List<GetCollaboratorResponse> GetCollaborators(int noteId);
+
     }
 }
