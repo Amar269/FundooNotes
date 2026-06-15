@@ -66,5 +66,21 @@ namespace DataBaseLayer.Repository
         })
         .ToList();
         }
+
+        public bool RemoveCollaborator(int collaboratorId)
+        {
+            var collaborator = _dbContext.Collaborators
+        .FirstOrDefault(x => x.CollaboratorId == collaboratorId);
+
+            if (collaborator == null)
+            {
+                throw new Exception("Collaborator not found");
+            }
+
+            _dbContext.Collaborators.Remove(collaborator);
+            _dbContext.SaveChanges();
+
+            return true;
+        }
     }
 }

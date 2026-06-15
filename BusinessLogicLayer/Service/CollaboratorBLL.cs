@@ -31,5 +31,10 @@ namespace BusinessLogicLayer.Service
 
             return _collaboratorDAL.GetCollaborators(noteId);
         }
+
+        public bool RemoveCollaborator(int collaboratorId)
+        {
+            return _collaboratorDAL.RemoveCollaborator(collaboratorId);
+        }
     }
 }

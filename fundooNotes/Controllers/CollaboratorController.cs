@@ -59,6 +59,20 @@ namespace fundooNotes.Controllers
 
 
 
+        [HttpDelete("{collaboratorId}")]
+        public IActionResult RemoveCollaborator(int collaboratorId)
+        {
+            var result = _collaboratorBLL.RemoveCollaborator(collaboratorId);
+
+            return Ok(new
+            {
+                success = true,
+                message = "Collaborator removed successfully",
+                data = result
+            });
+        }
+
+
 
 
 

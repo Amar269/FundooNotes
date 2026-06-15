@@ -13,5 +13,7 @@ namespace BusinessLogicLayer.Interface
 
         List<GetCollaboratorResponse> GetCollaborators(int noteId);
 
+        bool RemoveCollaborator(int collaboratorId);
+
     }
 }
