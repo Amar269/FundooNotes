@@ -4,6 +4,7 @@ using BusinessLogicLayer.Interface;
 using BusinessLogicLayer.Templates;
 using DataBaseLayer.Interface;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using ModelLayer.DTO.RabbitMQ;
 using ModelLayer.DTO.User;
@@ -24,22 +25,29 @@ namespace BusinessLogicLayer.Service
         private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
         private readonly IRabbitMQProducer _rabbitMQProducer;
+        private readonly ILogger<UserBLL> _logger;
         public UserBLL(
                IUserDAL userDAl,
                IEmailService emailService ,
             IConfiguration configuration ,
-            IRabbitMQProducer rabbitMQProducer
+            IRabbitMQProducer rabbitMQProducer,
+            ILogger<UserBLL> logger
          )
         {
             _UserDAl = userDAl;
             _emailService = emailService;
             _configuration = configuration;
             _rabbitMQProducer = rabbitMQProducer;
+            _logger = logger;
         }
 
 
         public async Task<UserResponse> RegisterUser(RegisterUserRequest userRequest)
         {
+
+            _logger.LogInformation("User Registration Started for Email : {Email}" , userRequest.Email);
+
+
             User user = new User()
             {
                 FirstName = userRequest.FirstName,
@@ -51,77 +59,15 @@ namespace BusinessLogicLayer.Service
             };
             user = _UserDAl.RegisterUser(user);
 
-            string body = $@"
-<div style='font-family:Arial,sans-serif;
-            max-width:600px;
-            margin:auto;
-            border:1px solid #e0e0e0;
-            border-radius:10px;
-            overflow:hidden;'>
+            _logger.LogInformation(
+                "User registered Successfully . UserId : {UserId} , Email : {Email}",
+                user.UserId,
+                user.Email );
 
-    <div style='background-color:#22c55e;
-                color:white;
-                padding:20px;
-                text-align:center;'>
 
-        <h1 style='margin:0;'>Fundoo Notes</h1>
 
-        <p style='margin-top:10px;font-size:14px;'>
-            Connecting Worlds, Creating History
-        </p>
 
-    </div>
-
-    <div style='padding:25px;'>
-
-        <h2>Hello {user.FirstName}! 👋</h2>
-
-        <p>
-            Your Fundoo Notes account has been created successfully.
-        </p>
-
-        <p>
-            We're excited to have you on board.
-            Every great journey begins with a single note. ✨
-        </p>
-
-        <div style='background:#f4f4f4;
-                    padding:15px;
-                    border-radius:8px;
-                    margin-top:15px;'>
-
-            <strong>Account Details</strong><br/>
-            Name: {user.FirstName} {user.LastName}<br/>
-            Email: {user.Email}
-
-        </div>
-
-        <p style='margin-top:20px;'>
-            Thank you for joining Fundoo Notes.
-            We look forward to helping you organize your ideas,
-            memories, and goals.
-        </p>
-
-        <p>
-            Best Wishes,<br/><br/>
-
-            <strong>Amarnath Kolla</strong><br/>
-            Cloud Researcher & .NET Trainee
-        </p>
-
-    </div>
-
-    <div style='background:#f8f8f8;
-                text-align:center;
-                padding:12px;
-                font-size:12px;
-                color:#666;'>
-
-        © Fundoo Notes | Welcome Aboard 🚀
-
-    </div>
-
-</div>";
+            string body = NewUserLoginTemplate.GetBody(user.FirstName,user.LastName,user.Email);
             var emailMessage = new EmailMessageDTO
             {
                 ToEmail = user.Email,

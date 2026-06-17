@@ -12,13 +12,22 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
 using System.Text;
+using NLog;
+using NLog.Web;
 namespace fundooNotes
 {
     public class Program
     {
         public static void Main(string[] args)
         {
+            var logger = LogManager.Setup()
+                         .LoadConfigurationFromFile("nlog.config")
+                         .GetCurrentClassLogger();
+
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Logging.ClearProviders();
+            builder.Host.UseNLog();
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
